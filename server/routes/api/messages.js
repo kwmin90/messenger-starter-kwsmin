@@ -51,4 +51,27 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+router.put("/", async (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.sendStatus(401);
+    }
+    const userId = req.user.id;
+    const conversationId = req.body.convId;
+    if (conversationId) {
+      const messages = await Message.findAll({
+        where: { conversationId: conversationId },
+      });
+      messages.forEach(async (message) => {
+        if (message.senderId !== userId) {
+          await Message.update({ read: true }, { where: { id: message.id } });
+        }
+      });
+      return res.sendStatus(200);
+    } else return res.sendStatus(403);
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;

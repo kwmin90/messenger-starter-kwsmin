@@ -94,6 +94,20 @@ const sendMessage = (data, body) => {
   });
 };
 
+const editMessage = async (id) => {
+  const { data } = await axios.put("/api/messages", { convId: id });
+  return data;
+};
+
+export const editReadStatus = async (conv) => {
+  try {
+    const data = await editMessage(conv.id);
+    await fetchConversations();
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 // message format to send: {recipientId, text, conversationId}
 // conversationId will be set to null if its a brand new conversation
 export const postMessage = (body) => async (dispatch) => {
