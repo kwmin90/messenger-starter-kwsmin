@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box } from "@material-ui/core";
 import { BadgeAvatar, ChatContent } from "../Sidebar";
 import { withStyles } from "@material-ui/core/styles";
@@ -21,12 +21,21 @@ const styles = {
 };
 
 const Chat = (props) => {
-  const handleClick = async (conversation) => {
-    await props.setActiveChat(conversation.otherUser.username);
-    await editReadStatus(conversation);
-  };
   const { classes } = props;
-  const { otherUser, unreadMessages } = props.conversation;
+  const { otherUser } = props.conversation;
+  const [unreadMessages, setUnreadMessages] = useState("");
+
+  useEffect(() => {
+    if (props.conversation.unreadMessages === 0) setUnreadMessages("");
+    else setUnreadMessages(`${props.conversation.unreadMessages}`);
+  }, []);
+
+  const handleClick = async (conversation) => {
+    await editReadStatus(conversation);
+    setUnreadMessages("");
+    await props.setActiveChat(conversation.otherUser.username);
+  };
+
   return (
     <Box
       onClick={() => handleClick(props.conversation)}

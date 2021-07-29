@@ -57,13 +57,14 @@ router.put("/", async (req, res, next) => {
       return res.sendStatus(401);
     }
     const userId = req.user.id;
-    const conversationId = req.body.convId;
-    if (conversationId) {
+    console.log(req.body);
+    const { convId, otherUserId } = req.body;
+    if (convId) {
       const messages = await Message.findAll({
-        where: { conversationId: conversationId },
+        where: { conversationId: convId },
       });
       messages.forEach(async (message) => {
-        if (message.senderId !== userId) {
+        if (message.senderId === otherUserId) {
           await Message.update({ read: true }, { where: { id: message.id } });
         }
       });

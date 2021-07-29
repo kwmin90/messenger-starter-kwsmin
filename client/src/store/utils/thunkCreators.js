@@ -94,15 +94,11 @@ const sendMessage = (data, body) => {
   });
 };
 
-const editMessage = async (id) => {
-  const { data } = await axios.put("/api/messages", { convId: id });
-  return data;
-};
-
-export const editReadStatus = async (conv) => {
+export const editReadStatus = async ({ id, otherUser }) => {
   try {
-    const data = await editMessage(conv.id);
-    await fetchConversations();
+    console.log(id);
+    console.log(otherUser);
+    await axios.put("/api/messages", { convId: id, otherUserId: otherUser.id });
   } catch (err) {
     console.error(err);
   }
