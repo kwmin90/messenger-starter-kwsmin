@@ -20,10 +20,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const unreadStyles = {
+  fontWeight: 600,
+  color: "white",
+  backgroundImage: "linear-gradient(225deg, #6CC1FF 0%, #3A8DFF 100%)",
+  borderRadius: "50%",
+  height: "21px",
+  minWidth: "20px",
+  display: "flex",
+  justifyContent: "center",
+  padding: "0 4px 0 4px",
+};
+
 const ChatContent = (props) => {
   const classes = useStyles();
 
-  const { conversation } = props;
+  const { conversation, unread } = props;
   const { latestMessageText, otherUser } = conversation;
 
   return (
@@ -36,6 +48,10 @@ const ChatContent = (props) => {
           {latestMessageText}
         </Typography>
       </Box>
+
+      <div style={unread !== "" ? unreadStyles : null}>
+        <span>{unread}</span>
+      </div>
     </Box>
   );
 };
