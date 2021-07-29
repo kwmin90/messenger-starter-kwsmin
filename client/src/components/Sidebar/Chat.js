@@ -37,7 +37,6 @@ const Chat = (props) => {
     if (conversation.id) {
       await editReadStatus(conversation);
       await props.fetchConversations();
-      setUnread("");
     }
     await props.setActiveChat(conversation.otherUser.username);
   };
