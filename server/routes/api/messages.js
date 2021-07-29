@@ -56,8 +56,6 @@ router.put("/", async (req, res, next) => {
     if (!req.user) {
       return res.sendStatus(401);
     }
-    const userId = req.user.id;
-    console.log(req.body);
     const { convId, otherUserId } = req.body;
     if (convId) {
       const messages = await Message.findAll({

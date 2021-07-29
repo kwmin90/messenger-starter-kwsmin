@@ -22,17 +22,19 @@ const styles = {
 
 const Chat = (props) => {
   const { classes } = props;
-  const { otherUser } = props.conversation;
-  const [unreadMessages, setUnreadMessages] = useState("");
+  const { otherUser, unreadMessages } = props.conversation;
+  const [unread, setUnread] = useState("");
 
   useEffect(() => {
-    if (props.conversation.unreadMessages === 0) setUnreadMessages("");
-    else setUnreadMessages(`${props.conversation.unreadMessages}`);
-  }, []);
+    if (unreadMessages === 0 || unreadMessages === undefined) setUnread("");
+    else setUnread(`${unreadMessages}`);
+  }, [unreadMessages]);
 
   const handleClick = async (conversation) => {
-    await editReadStatus(conversation);
-    setUnreadMessages("");
+    if (conversation.id) {
+      await editReadStatus(conversation);
+      setUnread("");
+    }
     await props.setActiveChat(conversation.otherUser.username);
   };
 
@@ -48,7 +50,7 @@ const Chat = (props) => {
         sidebar={true}
       />
       <ChatContent conversation={props.conversation} />
-      {unreadMessages}
+      {unread}
     </Box>
   );
 };

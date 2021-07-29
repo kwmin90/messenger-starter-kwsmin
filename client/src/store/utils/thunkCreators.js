@@ -96,8 +96,6 @@ const sendMessage = (data, body) => {
 
 export const editReadStatus = async ({ id, otherUser }) => {
   try {
-    console.log(id);
-    console.log(otherUser);
     await axios.put("/api/messages", { convId: id, otherUserId: otherUser.id });
   } catch (err) {
     console.error(err);
