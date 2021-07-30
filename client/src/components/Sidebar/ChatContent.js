@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -34,9 +34,14 @@ const unreadStyles = {
 
 const ChatContent = (props) => {
   const classes = useStyles();
+  const { conversation } = props;
+  const { latestMessageText, otherUser, unreadMessages } = conversation;
+  const [unread, setUnread] = useState("");
 
-  const { conversation, unread } = props;
-  const { latestMessageText, otherUser } = conversation;
+  useEffect(() => {
+    if (unreadMessages === 0 || unreadMessages === undefined) setUnread("");
+    else setUnread(`${unreadMessages}`);
+  }, [unreadMessages]);
 
   return (
     <Box className={classes.root}>

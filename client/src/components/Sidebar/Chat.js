@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Box } from "@material-ui/core";
 import { BadgeAvatar, ChatContent } from "../Sidebar";
 import { withStyles } from "@material-ui/core/styles";
 import { setActiveChat } from "../../store/activeConversation";
 import { connect } from "react-redux";
-import {
-  editReadStatus,
-  fetchConversations,
-} from "../../store/utils/thunkCreators";
+import { editReadStatus } from "../../store/utils/thunkCreators";
 
 const styles = {
   root: {
@@ -25,18 +22,11 @@ const styles = {
 
 const Chat = (props) => {
   const { classes } = props;
-  const { otherUser, unreadMessages } = props.conversation;
-  const [unread, setUnread] = useState("");
-
-  useEffect(() => {
-    if (unreadMessages === 0 || unreadMessages === undefined) setUnread("");
-    else setUnread(`${unreadMessages}`);
-  }, [unreadMessages]);
+  const { otherUser } = props.conversation;
 
   const handleClick = async (conversation) => {
     if (conversation.id) {
-      await editReadStatus(conversation);
-      await props.fetchConversations();
+      await props.editReadStatus(conversation);
     }
     await props.setActiveChat(conversation.otherUser.username);
   };
@@ -52,9 +42,16 @@ const Chat = (props) => {
         online={otherUser.online}
         sidebar={true}
       />
-      <ChatContent conversation={props.conversation} unread={unread} />
+      <ChatContent conversation={props.conversation} />
     </Box>
   );
+};
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+    conversations: state.conversations,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -62,10 +59,13 @@ const mapDispatchToProps = (dispatch) => {
     setActiveChat: (id) => {
       dispatch(setActiveChat(id));
     },
-    fetchConversations: () => {
-      dispatch(fetchConversations());
+    editReadStatus: (conversation) => {
+      dispatch(editReadStatus(conversation));
     },
   };
 };
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(Chat));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(Chat));

@@ -58,16 +58,12 @@ router.put("/", async (req, res, next) => {
     }
     const { convId, otherUserId } = req.body;
     if (convId) {
-      const messages = await Message.findAll({
-        where: { conversationId: convId },
-      });
-      messages.forEach(async (message) => {
-        if (message.senderId === otherUserId) {
-          await Message.update({ read: true }, { where: { id: message.id } });
-        }
-      });
-      return res.sendStatus(200);
-    } else return res.sendStatus(403);
+      await Message.update(
+        { read: true },
+        { where: { conversationId: convId, senderId: otherUserId } }
+      );
+      return res.sendStatus(204);
+    } else return res.sendStatus(400);
   } catch (err) {
     next(err);
   }

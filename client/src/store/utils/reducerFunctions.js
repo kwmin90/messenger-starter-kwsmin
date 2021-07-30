@@ -29,6 +29,24 @@ export const addMessageToStore = (state, payload) => {
   });
 };
 
+export const addMessageStatusToStore = (state, payload) => {
+  const { conversation } = payload;
+  console.log(conversation.unreadMessages);
+  conversation.messages.forEach((message) => {
+    if (message.senderId === conversation.otherUser.id) {
+      message.read = true;
+    }
+  });
+  conversation.unreadMessages = 0;
+  return state.map((convo) => {
+    if (convo.id === conversation.id) {
+      return conversation;
+    } else {
+      return convo;
+    }
+  });
+};
+
 export const addOnlineUserToStore = (state, id) => {
   return state.map((convo) => {
     if (convo.otherUser.id === id) {
