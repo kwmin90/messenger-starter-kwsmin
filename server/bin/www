@@ -47,10 +47,10 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on("new-message-status", (data) => {
-    socket.broadcast.emit("new-message-status", {
-      message: data.message,
-      sender: data.sender,
+  socket.on("connected-user", (data) => {
+    socket.broadcast.emit("connected-user", {
+      convId: data.convId,
+      connectedUser: data.connectedUser,
     });
   });
 

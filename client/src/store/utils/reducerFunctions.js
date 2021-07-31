@@ -14,14 +14,20 @@ export const addMessageToStore = (state, payload) => {
   return state.map((convo) => {
     if (convo.id === message.conversationId) {
       const convoCopy = { ...convo };
-      convoCopy.messages.push(message);
+      const { messages, otherUser } = convoCopy;
       convoCopy.latestMessageText = message.text;
-      if (
-        convoCopy.messages[convoCopy.messages.length - 1].senderId ===
-        convoCopy.otherUser.id
-      ) {
-        convoCopy.unreadMessages++;
+      if (messages[messages.length - 1].senderId === otherUser.id) {
+        if (convoCopy.user1 === null || convoCopy.user2 === null) {
+          convoCopy.unreadMessages++;
+        }
       }
+      if (
+        convoCopy.user1 === otherUser.username ||
+        convoCopy.user2 === otherUser.username
+      ) {
+        message.read = true;
+      }
+      messages.push(message);
       return convoCopy;
     } else {
       return convo;
@@ -30,19 +36,44 @@ export const addMessageToStore = (state, payload) => {
 };
 
 export const addMessageStatusToStore = (state, payload) => {
-  const { conversation } = payload;
-  console.log(conversation.unreadMessages);
-  conversation.messages.forEach((message) => {
-    if (message.senderId === conversation.otherUser.id) {
-      message.read = true;
-    }
-  });
-  conversation.unreadMessages = 0;
+  const { convId } = payload;
   return state.map((convo) => {
-    if (convo.id === conversation.id) {
-      return conversation;
+    if (convo.id === convId) {
+      const convoCopy = { ...convo };
+      convoCopy.messages.forEach((message) => {
+        if (message.senderId === convoCopy.otherUser.id) {
+          message.read = true;
+        }
+      });
+      convoCopy.unreadMessages = 0;
+      return convoCopy;
     } else {
       return convo;
+    }
+  });
+};
+export const addConnectedUserToStore = (state, payload) => {
+  const { convId, connectedUser } = payload;
+  return state.map((convo) => {
+    if (convo.id === convId) {
+      const convoCopy = { ...convo };
+      if (convoCopy.user1 === null) {
+        convoCopy.user1 = connectedUser;
+      } else {
+        convoCopy.user2 = connectedUser;
+      }
+      return convoCopy;
+    } else {
+      const convoCopy = { ...convo };
+      console.log(connectedUser);
+      if (convoCopy.user1 === connectedUser) {
+        convoCopy.user1 = null;
+        convoCopy.user2 = undefined;
+      } else {
+        convoCopy.user2 = null;
+        convoCopy.user1 = undefined;
+      }
+      return convoCopy;
     }
   });
 };

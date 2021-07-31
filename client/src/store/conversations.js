@@ -5,6 +5,7 @@ import {
   removeOfflineUserFromStore,
   addMessageToStore,
   addMessageStatusToStore,
+  addConnectedUserToStore,
 } from "./utils/reducerFunctions";
 
 // ACTIONS
@@ -12,6 +13,7 @@ import {
 const GET_CONVERSATIONS = "GET_CONVERSATIONS";
 const SET_MESSAGE = "SET_MESSAGE";
 const SET_MESSAGE_STATUS = "SET_MESSAGE_STATUS";
+const SET_CONNECTED_USER = "SET_CONNECTED_USER";
 const ADD_ONLINE_USER = "ADD_ONLINE_USER";
 const REMOVE_OFFLINE_USER = "REMOVE_OFFLINE_USER";
 const SET_SEARCHED_USERS = "SET_SEARCHED_USERS";
@@ -33,10 +35,18 @@ export const setNewMessage = (message, sender) => {
     payload: { message, sender: sender || null },
   };
 };
-export const setMessageStatus = (conversation) => {
+
+export const setMessageStatus = (convId) => {
   return {
     type: SET_MESSAGE_STATUS,
-    payload: { conversation },
+    payload: { convId },
+  };
+};
+
+export const setConnectedUser = (convId, connectedUser) => {
+  return {
+    type: SET_CONNECTED_USER,
+    payload: { convId, connectedUser },
   };
 };
 
@@ -85,6 +95,8 @@ const reducer = (state = [], action) => {
       return addMessageToStore(state, action.payload);
     case SET_MESSAGE_STATUS:
       return addMessageStatusToStore(state, action.payload);
+    case SET_CONNECTED_USER:
+      return addConnectedUserToStore(state, action.payload);
     case ADD_ONLINE_USER: {
       return addOnlineUserToStore(state, action.id);
     }

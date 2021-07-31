@@ -95,18 +95,6 @@ const sendMessage = (data, body) => {
   });
 };
 
-export const editReadStatus = (conv) => async (dispatch) => {
-  try {
-    await axios.put("/api/messages", {
-      convId: conv.id,
-      otherUserId: conv.otherUser.id,
-    });
-    dispatch(setMessageStatus(conv));
-  } catch (err) {
-    console.error(err);
-  }
-};
-
 // message format to send: {recipientId, text, conversationId}
 // conversationId will be set to null if its a brand new conversation
 export const postMessage = (body) => async (dispatch) => {
@@ -120,6 +108,32 @@ export const postMessage = (body) => async (dispatch) => {
     await sendMessage(data, body);
   } catch (error) {
     console.error(error);
+  }
+};
+
+const sendConnectedUser = (convId, connectedUser) => {
+  socket.emit("connected-user", {
+    convId: convId,
+    connectedUser: connectedUser,
+  });
+};
+export const addConnectedUserToConvo = async (convId, user) => {
+  try {
+    await sendConnectedUser(convId, user.username);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const editReadStatus = (conv) => async (dispatch) => {
+  try {
+    await axios.put("/api/messages", {
+      convId: conv.id,
+      otherUserId: conv.otherUser.id,
+    });
+    dispatch(setMessageStatus(conv.id));
+  } catch (err) {
+    console.error(err);
   }
 };
 
