@@ -5,7 +5,7 @@ import {
   addConversation,
   setNewMessage,
   setSearchedUsers,
-  setMessageStatus,
+  setUnreadMessages,
   setConnectedUser,
 } from "../conversations";
 import { gotUser, setFetchingStatus } from "../user";
@@ -133,7 +133,7 @@ export const editReadStatus = (conv) => async (dispatch) => {
       convId: conv.id,
       otherUserId: conv.otherUser.id,
     });
-    dispatch(setMessageStatus(conv.id));
+    dispatch(setUnreadMessages(conv.id));
   } catch (err) {
     console.error(err);
   }

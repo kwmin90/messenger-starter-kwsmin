@@ -17,6 +17,7 @@ const Messages = (props) => {
             text={message.text}
             time={time}
             status={message.read}
+            otherUserPhoto={otherUser.photoUrl}
           />
         ) : (
           <OtherUserBubble

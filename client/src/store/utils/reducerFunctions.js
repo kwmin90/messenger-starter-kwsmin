@@ -42,11 +42,22 @@ export const addMessageStatusToStore = (state, payload) => {
           message.read = true;
         }
       });
-      convoCopy.unreadMessages = 0;
       return convoCopy;
     } else {
       return convo;
     }
+  });
+};
+
+export const addUnreadMessagesToStore = (state, payload) => {
+  const { convId } = payload;
+  return state.map((convo) => {
+    if (convo.id === convId) {
+      const convoCopy = { ...convo };
+      convoCopy.unreadMessages = 0;
+      return convoCopy;
+    }
+    return convo;
   });
 };
 export const addConnectedUserToStore = (state, payload) => {
