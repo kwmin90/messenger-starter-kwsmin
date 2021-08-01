@@ -52,10 +52,10 @@ export const setUnreadMessages = (convId) => {
   };
 };
 
-export const setConnectedUser = (convId, user) => {
+export const setConnectedUser = (convId, user, otherUser) => {
   return {
     type: SET_CONNECTED_USER,
-    payload: { convId, user },
+    payload: { convId, user, otherUser },
   };
 };
 

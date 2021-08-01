@@ -24,7 +24,7 @@ socket.on("connect", () => {
     store.dispatch(setNewMessage(data.message, data.sender));
   });
   socket.on("connected-user", (data) => {
-    store.dispatch(setConnectedUser(data.convId, data.user));
+    store.dispatch(setConnectedUser(data.convId, data.user, data.otherUser));
     store.dispatch(setMessageStatus(data.convId));
   });
 });

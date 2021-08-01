@@ -51,6 +51,7 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("connected-user", {
       convId: data.convId,
       user: data.user,
+      otherUser: data.otherUser,
     });
   });
 

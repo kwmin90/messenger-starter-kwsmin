@@ -61,14 +61,17 @@ export const addUnreadMessagesToStore = (state, payload) => {
   });
 };
 export const addConnectedUserToStore = (state, payload) => {
-  const { convId, user } = payload;
+  const { convId, user, otherUser } = payload;
+  console.log(payload);
   return state.map((convo) => {
     if (convo.id === convId) {
       const convoCopy = { ...convo };
-      if (convoCopy.user1) {
-        convoCopy.user2 = user;
-      } else {
+      if (!convoCopy.user1) {
         convoCopy.user1 = user;
+      } else if (convoCopy.user1 === user) {
+        convoCopy.user1 = user;
+      } else {
+        convoCopy.user2 = user;
       }
       return convoCopy;
     } else {
