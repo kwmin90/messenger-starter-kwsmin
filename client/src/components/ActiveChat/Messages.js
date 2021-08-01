@@ -29,10 +29,8 @@ const Messages = (props) => {
   useEffect(() => {
     let index;
     let length = props.messages.length;
-    let filteredArr = [];
     for (let i = 0; i < length; i++) {
       if (props.messages[i].senderId === props.userId) {
-        filteredArr.push(props.messages[i]);
         if (props.messages[i].read) {
           index = props.messages[i].id;
         }
