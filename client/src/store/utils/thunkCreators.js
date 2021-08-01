@@ -112,22 +112,20 @@ export const postMessage = (body) => async (dispatch) => {
   }
 };
 
-const sendConnectedUser = (convId, user, otherUser) => {
+const sendConnectedUser = (convId, user) => {
   socket.emit("connected-user", {
     convId: convId,
     user: user,
-    otherUser: otherUser,
   });
 };
-export const addConnectedUserToConvo =
-  (convId, user, otherUser) => async (dispatch) => {
-    try {
-      dispatch(setConnectedUser(convId, user, otherUser));
-      await sendConnectedUser(convId, user, otherUser);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+export const addConnectedUserToConvo = (convId, user) => async (dispatch) => {
+  try {
+    dispatch(setConnectedUser(convId, user));
+    await sendConnectedUser(convId, user);
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 export const editReadStatus = (conv) => async (dispatch) => {
   try {

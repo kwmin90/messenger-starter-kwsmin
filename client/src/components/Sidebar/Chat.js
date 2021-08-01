@@ -28,11 +28,7 @@ const Chat = (props) => {
   const { otherUser } = props.conversation;
 
   const handleClick = async (conversation) => {
-    await props.addConnectedUserToConvo(
-      conversation.id,
-      user.username,
-      otherUser.username
-    );
+    await props.addConnectedUserToConvo(conversation.id, user.username);
     if (conversation.id) {
       await props.editReadStatus(conversation);
     }
