@@ -28,7 +28,7 @@ const Chat = (props) => {
   const { otherUser } = props.conversation;
 
   const handleClick = async (conversation) => {
-    await addConnectedUserToConvo(conversation.id, user);
+    await props.addConnectedUserToConvo(conversation.id, user.username);
     if (conversation.id) {
       await props.editReadStatus(conversation);
     }
@@ -65,6 +65,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     editReadStatus: (conversation) => {
       dispatch(editReadStatus(conversation));
+    },
+    addConnectedUserToConvo: (convId, user) => {
+      dispatch(addConnectedUserToConvo(convId, user));
     },
   };
 };

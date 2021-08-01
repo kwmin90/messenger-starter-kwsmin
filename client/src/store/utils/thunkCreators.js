@@ -6,6 +6,7 @@ import {
   setNewMessage,
   setSearchedUsers,
   setMessageStatus,
+  setConnectedUser,
 } from "../conversations";
 import { gotUser, setFetchingStatus } from "../user";
 
@@ -111,15 +112,16 @@ export const postMessage = (body) => async (dispatch) => {
   }
 };
 
-const sendConnectedUser = (convId, connectedUser) => {
+const sendConnectedUser = (convId, user) => {
   socket.emit("connected-user", {
     convId: convId,
-    connectedUser: connectedUser,
+    user: user,
   });
 };
-export const addConnectedUserToConvo = async (convId, user) => {
+export const addConnectedUserToConvo = (convId, user) => async (dispatch) => {
   try {
-    await sendConnectedUser(convId, user.username);
+    dispatch(setConnectedUser(convId, user));
+    await sendConnectedUser(convId, user);
   } catch (err) {
     console.error(err);
   }

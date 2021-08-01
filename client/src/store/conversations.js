@@ -43,10 +43,10 @@ export const setMessageStatus = (convId) => {
   };
 };
 
-export const setConnectedUser = (convId, connectedUser) => {
+export const setConnectedUser = (convId, user) => {
   return {
     type: SET_CONNECTED_USER,
-    payload: { convId, connectedUser },
+    payload: { convId, user },
   };
 };
 

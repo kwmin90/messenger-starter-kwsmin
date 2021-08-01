@@ -32,7 +32,6 @@ const SenderBubble = (props) => {
   const classes = useStyles();
   const { time, text, status, conversation } = props;
   const [read, setRead] = useState("");
-  console.log(props);
   useEffect(() => {
     if (status) {
       setRead("read ");

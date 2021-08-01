@@ -14,20 +14,17 @@ export const addMessageToStore = (state, payload) => {
   return state.map((convo) => {
     if (convo.id === message.conversationId) {
       const convoCopy = { ...convo };
-      const { messages, otherUser } = convoCopy;
-      convoCopy.latestMessageText = message.text;
-      if (messages[messages.length - 1].senderId === otherUser.id) {
-        if (convoCopy.user1 === null || convoCopy.user2 === null) {
-          convoCopy.unreadMessages++;
-        }
-      }
-      if (
-        convoCopy.user1 === otherUser.username ||
-        convoCopy.user2 === otherUser.username
-      ) {
+      const { messages, otherUser, user1, user2 } = convoCopy;
+      if (user1 === otherUser.username || user2 === otherUser.username) {
         message.read = true;
       }
       messages.push(message);
+      convoCopy.latestMessageText = message.text;
+      if (messages[messages.length - 1].senderId === otherUser.id) {
+        if (!user1 || !user2) {
+          convoCopy.unreadMessages++;
+        }
+      }
       return convoCopy;
     } else {
       return convo;
@@ -41,7 +38,7 @@ export const addMessageStatusToStore = (state, payload) => {
     if (convo.id === convId) {
       const convoCopy = { ...convo };
       convoCopy.messages.forEach((message) => {
-        if (message.senderId === convoCopy.otherUser.id) {
+        if (message.senderId !== convoCopy.otherUser.id) {
           message.read = true;
         }
       });
@@ -53,25 +50,22 @@ export const addMessageStatusToStore = (state, payload) => {
   });
 };
 export const addConnectedUserToStore = (state, payload) => {
-  const { convId, connectedUser } = payload;
+  const { convId, user } = payload;
   return state.map((convo) => {
     if (convo.id === convId) {
       const convoCopy = { ...convo };
-      if (convoCopy.user1 === null) {
-        convoCopy.user1 = connectedUser;
+      if (convoCopy.user1) {
+        convoCopy.user2 = user;
       } else {
-        convoCopy.user2 = connectedUser;
+        convoCopy.user1 = user;
       }
       return convoCopy;
     } else {
       const convoCopy = { ...convo };
-      console.log(connectedUser);
-      if (convoCopy.user1 === connectedUser) {
+      if (convoCopy.user1 === user) {
         convoCopy.user1 = null;
-        convoCopy.user2 = undefined;
       } else {
         convoCopy.user2 = null;
-        convoCopy.user1 = undefined;
       }
       return convoCopy;
     }
