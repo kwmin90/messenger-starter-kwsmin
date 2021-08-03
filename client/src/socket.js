@@ -28,9 +28,6 @@ socket.on("connect", () => {
     store.dispatch(setConnectedUser(data.convId, data.user));
     store.dispatch(setMessageStatus(data.convId));
   });
-  socket.io.on("reconnect", () => {
-    console.log("reconnect");
-  });
 });
 
 export default socket;
