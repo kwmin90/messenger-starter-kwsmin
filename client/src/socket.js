@@ -8,11 +8,14 @@ import {
   setMessageStatus,
 } from "./store/conversations";
 
-const socket = io(window.location.origin);
+const token = localStorage.getItem("messenger-token");
+const socket = io(window.location.origin, {
+  extraHeaders: { Authorization: `Bearer ${token}` },
+});
 
 socket.on("connect", () => {
   console.log("connected to server");
-
+  console.log(socket.id);
   socket.on("add-online-user", (id) => {
     store.dispatch(addOnlineUser(id));
   });
@@ -25,6 +28,9 @@ socket.on("connect", () => {
   socket.on("connected-user", (data) => {
     store.dispatch(setConnectedUser(data.convId, data.user));
     store.dispatch(setMessageStatus(data.convId));
+  });
+  socket.on("connect_error", () => {
+    console.log("connection failed");
   });
 });
 
