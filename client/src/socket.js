@@ -15,7 +15,6 @@ const socket = io(window.location.origin, {
 
 socket.on("connect", () => {
   console.log("connected to server");
-  console.log(socket.id);
   socket.on("add-online-user", (id) => {
     store.dispatch(addOnlineUser(id));
   });
@@ -29,8 +28,8 @@ socket.on("connect", () => {
     store.dispatch(setConnectedUser(data.convId, data.user));
     store.dispatch(setMessageStatus(data.convId));
   });
-  socket.on("connect_error", () => {
-    console.log("connection failed");
+  socket.io.on("reconnect", () => {
+    console.log("reconnect");
   });
 });
 
