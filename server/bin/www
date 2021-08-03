@@ -32,16 +32,6 @@ const server = http.createServer(app);
 const io = require("socket.io")(server);
 const socketioJwt = require("socketio-jwt");
 
-// const findIndexOfUser = (arr, id) => {
-//   let index;
-//   arr.forEach((user, i) => {
-//     if (user.id === id) {
-//       index = i;
-//     }
-//   });
-//   return index;
-// };
-
 io.use(
   socketioJwt.authorize({
     secret: process.env.SESSION_SECRET,
