@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Box, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -18,30 +18,23 @@ const useStyles = makeStyles((theme) => ({
     color: "#9CADC8",
     letterSpacing: -0.17,
   },
+  unreadStyles: {
+    fontWeight: 600,
+    color: "white",
+    backgroundImage: "linear-gradient(225deg, #6CC1FF 0%, #3A8DFF 100%)",
+    borderRadius: "50%",
+    height: "21px",
+    minWidth: "20px",
+    display: "flex",
+    justifyContent: "center",
+    padding: "0 4px 0 4px",
+  },
 }));
-
-const unreadStyles = {
-  fontWeight: 600,
-  color: "white",
-  backgroundImage: "linear-gradient(225deg, #6CC1FF 0%, #3A8DFF 100%)",
-  borderRadius: "50%",
-  height: "21px",
-  minWidth: "20px",
-  display: "flex",
-  justifyContent: "center",
-  padding: "0 4px 0 4px",
-};
 
 const ChatContent = (props) => {
   const classes = useStyles();
   const { conversation } = props;
   const { latestMessageText, otherUser, unreadMessages } = conversation;
-  const [unread, setUnread] = useState("");
-
-  useEffect(() => {
-    if (unreadMessages === 0 || unreadMessages === undefined) setUnread("");
-    else setUnread(`${unreadMessages}`);
-  }, [unreadMessages]);
 
   return (
     <Box className={classes.root}>
@@ -53,10 +46,11 @@ const ChatContent = (props) => {
           {latestMessageText}
         </Typography>
       </Box>
-
-      <div style={unread !== "" ? unreadStyles : null}>
-        <span>{unread}</span>
-      </div>
+      {unreadMessages !== "" && (
+        <Box className={classes.unreadStyles}>
+          <span>{unreadMessages}</span>
+        </Box>
+      )}
     </Box>
   );
 };

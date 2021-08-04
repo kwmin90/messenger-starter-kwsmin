@@ -6,6 +6,7 @@ import {
   addOnlineUser,
   setConnectedUser,
   setMessageStatus,
+  removeConnectedUser,
 } from "./store/conversations";
 
 const token = localStorage.getItem("messenger-token");
@@ -27,6 +28,9 @@ socket.on("connect", () => {
   socket.on("connected-user", (data) => {
     store.dispatch(setConnectedUser(data.convId, data.user));
     store.dispatch(setMessageStatus(data.convId));
+  });
+  socket.on("disconnect-user", (data) => {
+    store.dispatch(removeConnectedUser(data.convId, data.user));
   });
 });
 

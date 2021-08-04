@@ -51,7 +51,7 @@ export const addUnreadMessagesToStore = (state, payload) => {
   return state.map((convo) => {
     if (convo.id === convId) {
       const convoCopy = { ...convo };
-      convoCopy.unreadMessages = 0;
+      convoCopy.unreadMessages = "";
       return convoCopy;
     }
     return convo;
@@ -78,6 +78,22 @@ export const addConnectedUserToStore = (state, payload) => {
         convoCopy.user2 = null;
       }
       return convoCopy;
+    }
+  });
+};
+export const removeConnectedUserFromStore = (state, payload) => {
+  const { convId, user } = payload;
+  return state.map((convo) => {
+    if (convo.id === convId) {
+      const convoCopy = { ...convo };
+      if (convoCopy.user1 === user) {
+        convoCopy.user1 = null;
+      } else if (convoCopy.user2 === user) {
+        convoCopy.user2 = null;
+      }
+      return convoCopy;
+    } else {
+      return convo;
     }
   });
 };
@@ -118,7 +134,7 @@ export const addSearchedUsersToStore = (state, users) => {
   users.forEach((user) => {
     // only create a fake convo if we don't already have a convo with this user
     if (!currentUsers[user.id]) {
-      let fakeConvo = { otherUser: user, messages: [] };
+      let fakeConvo = { otherUser: user, messages: [], unreadMessages: "" };
       newState.push(fakeConvo);
     }
   });

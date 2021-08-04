@@ -54,11 +54,20 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     const { currentUserId } = socket;
     if (currentUserId && onlineUsers.has(currentUserId)) {
-      onlineUsers.get(currentUserId).socketId.forEach((id, i) => {
+      const user = onlineUsers.get(currentUserId);
+      user.socketId.forEach((id, i) => {
         if (id === socket.id) {
-          onlineUsers.get(currentUserId).socketId.splice(i, 1);
+          user.socketId.splice(i, 1);
         }
       });
+      if (user.convOtherUser) {
+        onlineUsers.get(user.convOtherUser).socketId.forEach((id) => {
+          io.to(id).emit("disconnect-user", {
+            convId: user.connectedConv,
+            user: user.name,
+          });
+        });
+      }
     }
   });
 
@@ -73,6 +82,13 @@ io.on("connection", (socket) => {
   });
 
   socket.on("connected-user", (data) => {
+    const { currentUserId } = socket;
+    if (currentUserId && onlineUsers.has(currentUserId)) {
+      const user = onlineUsers.get(currentUserId);
+      user.connectedConv = data.convId;
+      user.convOtherUser = data.recipientId;
+      user.name = data.user;
+    }
     if (onlineUsers.has(data.recipientId)) {
       onlineUsers.get(data.recipientId).socketId.forEach((id) => {
         io.to(id).emit("connected-user", {

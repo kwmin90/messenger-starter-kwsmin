@@ -28,7 +28,7 @@ const Messages = (props) => {
   };
   useEffect(() => {
     let index;
-    let length = props.messages.length;
+    const length = props.messages.length;
     for (let i = 0; i < length; i++) {
       if (props.messages[i].senderId === props.userId) {
         if (props.messages[i].read) {
@@ -42,27 +42,19 @@ const Messages = (props) => {
     <Box>
       {messages.map((message) =>
         message.senderId === userId ? (
-          message.id === lastRead ? (
-            <div key={message.id} className={classes.root}>
-              <SenderBubble
-                text={message.text}
-                time={formatTime(message.createdAt)}
-                status={message.read}
-              />
+          <div key={message.id} className={classes.root}>
+            <SenderBubble
+              text={message.text}
+              time={formatTime(message.createdAt)}
+            />
+            {message.id === lastRead && (
               <Avatar
                 alt={otherUser.username}
                 src={otherUser.photoUrl}
                 className={classes.avatar}
               ></Avatar>
-            </div>
-          ) : (
-            <SenderBubble
-              key={message.id}
-              text={message.text}
-              time={formatTime(message.createdAt)}
-              status={message.read}
-            />
-          )
+            )}
+          </div>
         ) : (
           <OtherUserBubble
             key={message.id}

@@ -15,22 +15,13 @@ router.post("/", async (req, res, next) => {
     if (conversationId) {
       const conv = await Conversation.findByPk(conversationId);
       if (conv.user1Id === senderId || conv.user2Id === senderId) {
-        if (read) {
-          const message = await Message.create({
-            senderId,
-            text,
-            conversationId,
-            read,
-          });
-          return res.json({ message, sender });
-        } else {
-          const message = await Message.create({
-            senderId,
-            text,
-            conversationId,
-          });
-          return res.json({ message, sender });
-        }
+        const message = await Message.create({
+          senderId,
+          text,
+          conversationId,
+          read,
+        });
+        return res.json({ message, sender });
       } else return res.sendStatus(403);
     }
 
@@ -46,7 +37,7 @@ router.post("/", async (req, res, next) => {
         user1Id: senderId,
         user2Id: recipientId,
       });
-      if (onlineUsers.includes(sender.id)) {
+      if (onlineUsers.has(sender.id)) {
         sender.online = true;
       }
     }
