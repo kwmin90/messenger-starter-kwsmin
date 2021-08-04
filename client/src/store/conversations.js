@@ -4,12 +4,20 @@ import {
   addSearchedUsersToStore,
   removeOfflineUserFromStore,
   addMessageToStore,
+  addMessageStatusToStore,
+  addConnectedUserToStore,
+  addUnreadMessagesToStore,
+  removeConnectedUserFromStore,
 } from "./utils/reducerFunctions";
 
 // ACTIONS
 
 const GET_CONVERSATIONS = "GET_CONVERSATIONS";
 const SET_MESSAGE = "SET_MESSAGE";
+const SET_MESSAGE_STATUS = "SET_MESSAGE_STATUS";
+const SET_UNREAD_MESSAGES = "SET_UNREAD_MESSAGES";
+const SET_CONNECTED_USER = "SET_CONNECTED_USER";
+const REMOVE_CONNECTED_USER = "REMOVE_CONNECTED_USER";
 const ADD_ONLINE_USER = "ADD_ONLINE_USER";
 const REMOVE_OFFLINE_USER = "REMOVE_OFFLINE_USER";
 const SET_SEARCHED_USERS = "SET_SEARCHED_USERS";
@@ -29,6 +37,34 @@ export const setNewMessage = (message, sender) => {
   return {
     type: SET_MESSAGE,
     payload: { message, sender: sender || null },
+  };
+};
+
+export const setMessageStatus = (convId) => {
+  return {
+    type: SET_MESSAGE_STATUS,
+    payload: { convId },
+  };
+};
+
+export const setUnreadMessages = (convId) => {
+  return {
+    type: SET_UNREAD_MESSAGES,
+    payload: { convId },
+  };
+};
+
+export const setConnectedUser = (convId, user) => {
+  return {
+    type: SET_CONNECTED_USER,
+    payload: { convId, user },
+  };
+};
+
+export const removeConnectedUser = (convId, user) => {
+  return {
+    type: REMOVE_CONNECTED_USER,
+    payload: { convId, user },
   };
 };
 
@@ -75,6 +111,14 @@ const reducer = (state = [], action) => {
       return action.conversations;
     case SET_MESSAGE:
       return addMessageToStore(state, action.payload);
+    case SET_MESSAGE_STATUS:
+      return addMessageStatusToStore(state, action.payload);
+    case SET_UNREAD_MESSAGES:
+      return addUnreadMessagesToStore(state, action.payload);
+    case SET_CONNECTED_USER:
+      return addConnectedUserToStore(state, action.payload);
+    case REMOVE_CONNECTED_USER:
+      return removeConnectedUserFromStore(state, action.payload);
     case ADD_ONLINE_USER: {
       return addOnlineUserToStore(state, action.id);
     }

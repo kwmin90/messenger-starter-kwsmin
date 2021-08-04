@@ -62,11 +62,20 @@ router.get("/", async (req, res, next) => {
       }
 
       // set property for online status of the other user
-      if (onlineUsers.includes(convoJSON.otherUser.id)) {
+      if (onlineUsers.has(convoJSON.otherUser.id)) {
         convoJSON.otherUser.online = true;
       } else {
         convoJSON.otherUser.online = false;
       }
+
+      let unreadMessages = 0;
+      convoJSON.messages.forEach((message) => {
+        if (message.senderId !== userId && !message.read) unreadMessages++;
+      });
+      if (unreadMessages === undefined || unreadMessages === 0) {
+        unreadMessages = "";
+      }
+      convoJSON.unreadMessages = unreadMessages;
 
       // set properties for notification count and latest message preview
       convoJSON.latestMessageText = convoJSON.messages[0].text;

@@ -5,6 +5,8 @@ import {
   addConversation,
   setNewMessage,
   setSearchedUsers,
+  setUnreadMessages,
+  setConnectedUser,
 } from "../conversations";
 import { gotUser, setFetchingStatus } from "../user";
 
@@ -107,6 +109,35 @@ export const postMessage = (body) => async (dispatch) => {
     await sendMessage(data, body);
   } catch (error) {
     console.error(error);
+  }
+};
+
+const sendConnectedUser = (convId, user, recipientId) => {
+  socket.emit("connected-user", {
+    convId: convId,
+    user: user,
+    recipientId: recipientId,
+  });
+};
+export const addConnectedUserToConvo =
+  (convId, user, recipientId) => async (dispatch) => {
+    try {
+      dispatch(setConnectedUser(convId, user));
+      await sendConnectedUser(convId, user, recipientId);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+export const editReadStatus = (conv) => async (dispatch) => {
+  try {
+    await axios.put("/api/messages", {
+      convId: conv.id,
+      otherUserId: conv.otherUser.id,
+    });
+    dispatch(setUnreadMessages(conv.id));
+  } catch (err) {
+    console.error(err);
   }
 };
 

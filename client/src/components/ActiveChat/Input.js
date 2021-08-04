@@ -19,6 +19,7 @@ const styles = {
 
 const Input = (props) => {
   const [text, setText] = useState("");
+  const { conversation, conversationId } = props;
 
   const handleChange = (event) => {
     setText(event.target.value);
@@ -26,12 +27,17 @@ const Input = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    let read;
+    if (conversation.user1 && conversation.user2) {
+      read = true;
+    }
     // add sender user info if posting to a brand new convo, so that the other user will have access to username, profile pic, etc.
     const reqBody = {
       text: event.target.text.value,
       recipientId: props.otherUser.id,
-      conversationId: props.conversationId,
-      sender: props.conversationId ? null : props.user,
+      conversationId: conversationId,
+      sender: conversationId ? null : props.user,
+      read: read,
     };
     await props.postMessage(reqBody);
     setText("");
@@ -57,7 +63,10 @@ const Input = (props) => {
 const mapStateToProps = (state) => {
   return {
     user: state.user,
-    conversations: state.conversations,
+    conversation: state.conversations.find(
+      (conversation) =>
+        conversation.otherUser.username === state.activeConversation
+    ),
   };
 };
 
