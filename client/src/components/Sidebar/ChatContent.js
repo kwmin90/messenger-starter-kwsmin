@@ -18,6 +18,11 @@ const useStyles = makeStyles((theme) => ({
     color: "#9CADC8",
     letterSpacing: -0.17,
   },
+  previewWithBoldedText: {
+    fontSize: 12,
+    letterSpacing: -0.17,
+    fontWeight: "bold",
+  },
   unreadStyles: {
     fontWeight: 600,
     color: "white",
@@ -42,9 +47,15 @@ const ChatContent = (props) => {
         <Typography className={classes.username}>
           {otherUser.username}
         </Typography>
-        <Typography className={classes.previewText}>
-          {latestMessageText}
-        </Typography>
+        {unreadMessages ? (
+          <Typography className={classes.previewWithBoldedText}>
+            {latestMessageText}
+          </Typography>
+        ) : (
+          <Typography className={classes.previewText}>
+            {latestMessageText}
+          </Typography>
+        )}
       </Box>
       {unreadMessages !== "" && (
         <Box className={classes.unreadStyles}>

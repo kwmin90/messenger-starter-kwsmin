@@ -29,6 +29,10 @@ const useStyles = makeStyles(() => ({
     letterSpacing: -0.2,
     padding: 8,
   },
+  image: {
+    width: 200,
+    borderRadius: 7,
+  },
 }));
 
 const OtherUserBubble = (props) => {
@@ -46,7 +50,15 @@ const OtherUserBubble = (props) => {
           {otherUser.username} {time}
         </Typography>
         <Box className={classes.bubble}>
-          <Typography className={classes.text}>{text}</Typography>
+          {text.includes(
+            "https://messenger-starter-kwsmin.s3.amazonaws.com/"
+          ) ? (
+            <Typography className={classes.text}>
+              <img src={text} alt="" className={classes.image} />
+            </Typography>
+          ) : (
+            <Typography className={classes.text}>{text}</Typography>
+          )}
         </Box>
       </Box>
     </Box>

@@ -60,7 +60,7 @@ io.on("connection", (socket) => {
           user.socketId.splice(i, 1);
         }
       });
-      if (user.convOtherUser) {
+      if (user.convOtherUser && onlineUsers.has(user.convOtherUser)) {
         onlineUsers.get(user.convOtherUser).socketId.forEach((id) => {
           io.to(id).emit("disconnect-user", {
             convId: user.connectedConv,

@@ -12,6 +12,7 @@ import {
 const token = localStorage.getItem("messenger-token");
 const socket = io(window.location.origin, {
   extraHeaders: { Authorization: `Bearer ${token}` },
+  forceNew: true,
 });
 
 socket.on("connect", () => {

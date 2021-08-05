@@ -25,6 +25,10 @@ const useStyles = makeStyles(() => ({
     background: "#F4F6FA",
     borderRadius: "10px 10px 0 10px",
   },
+  image: {
+    width: 200,
+    borderRadius: 7,
+  },
 }));
 
 const SenderBubble = (props) => {
@@ -34,7 +38,13 @@ const SenderBubble = (props) => {
     <Box className={classes.root}>
       <Typography className={classes.date}>{time}</Typography>
       <Box className={classes.bubble}>
-        <Typography className={classes.text}>{text}</Typography>
+        {text.includes("https://messenger-starter-kwsmin.s3.amazonaws.com/") ? (
+          <Typography className={classes.text}>
+            <img src={text} alt="" className={classes.image} />
+          </Typography>
+        ) : (
+          <Typography className={classes.text}>{text}</Typography>
+        )}
       </Box>
     </Box>
   );
