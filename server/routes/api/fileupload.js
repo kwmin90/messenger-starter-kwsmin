@@ -4,7 +4,7 @@ const aws = require("aws-sdk");
 router.post("/", async (req, res, next) => {
   try {
     if (!req.user) {
-      return res.stendStatus(401);
+      return res.sendStatus(401);
     }
     const { type, name } = req.body;
     const { username } = req.user;
@@ -23,7 +23,7 @@ router.post("/", async (req, res, next) => {
     };
     const signedRequest = await s3.getSignedUrl("putObject", s3Params);
     const url = `https://${s3Bucket}.s3.amazonaws.com/${fileName}`;
-    return res.json({ url, signedRequest });
+    return res.status(200).json({ url, signedRequest });
   } catch (err) {
     next(err);
   }

@@ -41,7 +41,11 @@ const SenderBubble = (props) => {
       <Box className={classes.bubble}>
         {checkIfImage(text) ? (
           <Typography className={classes.text}>
-            <img src={text} alt="" className={classes.image} />
+            <Avatar
+              alt={props.user.username}
+              src={text}
+              className={classes.image}
+            ></Avatar>
           </Typography>
         ) : (
           <Typography className={classes.text}>{text}</Typography>

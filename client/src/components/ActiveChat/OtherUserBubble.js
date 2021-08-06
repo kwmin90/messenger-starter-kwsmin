@@ -53,7 +53,11 @@ const OtherUserBubble = (props) => {
         <Box className={classes.bubble}>
           {checkIfImage(text) ? (
             <Typography className={classes.text}>
-              <img src={text} alt="" className={classes.image} />
+              <Avatar
+                alt={otherUser.username}
+                src={text}
+                className={classes.image}
+              ></Avatar>
             </Typography>
           ) : (
             <Typography className={classes.text}>{text}</Typography>
