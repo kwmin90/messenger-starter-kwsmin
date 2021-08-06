@@ -15,23 +15,22 @@ const FileUpload = (props) => {
   const handleSubmit = async ({ target }) => {
     try {
       const file = target.files[0];
-      await axios
-        .post("/api/fileupload", {
+      if (file) {
+        const { data } = await axios.post("/api/fileupload", {
           name: file.name,
           type: file.type,
-        })
-        .then(async (res) => {
-          if (res) {
-            props.setText(res.data.url);
-            await fetch(res.data.signedRequest, {
-              method: "PUT",
-              headers: {
-                "Content-Type": file.type,
-              },
-              body: file,
-            });
-          }
         });
+        if (data.url) {
+          props.setText(data.url);
+          await fetch(data.signedRequest, {
+            method: "PUT",
+            headers: {
+              "Content-Type": file.type,
+            },
+            body: file,
+          });
+        }
+      }
     } catch (err) {
       console.error(err);
     }
