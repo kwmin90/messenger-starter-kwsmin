@@ -99,7 +99,26 @@ const sendMessage = (data, body) => {
     sender: data.sender,
   });
 };
-
+export const uploadFile = async (file) => {
+  try {
+    if (file) {
+      const { data } = await axios.post("/api/fileupload", {
+        name: file.name,
+        type: file.type,
+      });
+      await fetch(data.signedRequest, {
+        method: "PUT",
+        headers: {
+          "Content-Type": file.type,
+        },
+        body: file,
+      });
+    }
+    return data.url;
+  } catch (err) {
+    console.error(err);
+  }
+};
 // message format to send: {recipientId, text, conversationId}
 // conversationId will be set to null if its a brand new conversation
 export const postMessage = (body) => async (dispatch) => {
