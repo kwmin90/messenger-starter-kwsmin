@@ -1,7 +1,6 @@
 import { Box, Button, InputLabel, Input } from "@material-ui/core";
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
 import { uploadFile } from "../../store/utils/thunkCreators";
 
 const useStyles = makeStyles(() => ({
@@ -23,9 +22,11 @@ const FileUpload = (props) => {
 
   const handleSubmit = async ({ target }) => {
     const file = target.files[0];
-    const { url } = await uploadFile(file);
-    if (url) {
-      props.setText(url);
+    if (file) {
+      const url = await uploadFile(file);
+      if (url) {
+        props.setText(url);
+      }
     }
   };
   return (

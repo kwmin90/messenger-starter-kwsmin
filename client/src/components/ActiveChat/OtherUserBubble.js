@@ -32,6 +32,8 @@ const useStyles = makeStyles(() => ({
   },
   image: {
     width: 200,
+    minHeight: 200,
+    maxHeight: 300,
     borderRadius: 7,
   },
 }));
@@ -52,13 +54,11 @@ const OtherUserBubble = (props) => {
         </Typography>
         <Box className={classes.bubble}>
           {checkIfImage(text) ? (
-            <Typography className={classes.text}>
-              <Avatar
-                alt={otherUser.username}
-                src={text}
-                className={classes.image}
-              ></Avatar>
-            </Typography>
+            <Avatar
+              alt={otherUser.username}
+              src={text}
+              className={classes.image}
+            ></Avatar>
           ) : (
             <Typography className={classes.text}>{text}</Typography>
           )}

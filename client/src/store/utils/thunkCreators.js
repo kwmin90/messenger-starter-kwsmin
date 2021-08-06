@@ -101,19 +101,17 @@ const sendMessage = (data, body) => {
 };
 export const uploadFile = async (file) => {
   try {
-    if (file) {
-      const { data } = await axios.post("/api/fileupload", {
-        name: file.name,
-        type: file.type,
-      });
-      await fetch(data.signedRequest, {
-        method: "PUT",
-        headers: {
-          "Content-Type": file.type,
-        },
-        body: file,
-      });
-    }
+    const { data } = await axios.post("/api/fileupload", {
+      name: file.name,
+      type: file.type,
+    });
+    await fetch(data.signedRequest, {
+      method: "PUT",
+      headers: {
+        "Content-Type": file.type,
+      },
+      body: file,
+    });
     return data.url;
   } catch (err) {
     console.error(err);

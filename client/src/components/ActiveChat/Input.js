@@ -56,7 +56,9 @@ const Input = (props) => {
           name="text"
           onChange={handleChange}
         />
-        <FileUpload setText={setText} />
+        <FormControl>
+          <FileUpload setText={setText} />
+        </FormControl>
       </FormControl>
     </form>
   );
