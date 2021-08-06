@@ -78,7 +78,15 @@ router.get("/", async (req, res, next) => {
       convoJSON.unreadMessages = unreadMessages;
 
       // set properties for notification count and latest message preview
-      convoJSON.latestMessageText = convoJSON.messages[0].text;
+      if (
+        convoJSON.messages[0].text.includes(
+          "https://messenger-starter-kwsmin.s3.amazonaws.com/"
+        )
+      ) {
+        convoJSON.latestMessageText = "[Image]";
+      } else {
+        convoJSON.latestMessageText = convoJSON.messages[0].text;
+      }
       conversations[i] = convoJSON;
     }
 

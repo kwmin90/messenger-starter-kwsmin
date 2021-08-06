@@ -1,3 +1,5 @@
+import { checkIfImage } from "../../utils/utilFunctions";
+
 export const addMessageToStore = (state, payload) => {
   const { message, sender } = payload;
   // if sender isn't null, that means the message needs to be put in a brand new convo
@@ -16,7 +18,11 @@ export const addMessageToStore = (state, payload) => {
       const convoCopy = { ...convo };
       const { messages, otherUser, user1, user2 } = convoCopy;
       messages.push(message);
-      convoCopy.latestMessageText = message.text;
+      if (checkIfImage(message.text)) {
+        convoCopy.latestMessageText = "[Image]";
+      } else {
+        convoCopy.latestMessageText = message.text;
+      }
       if (messages[messages.length - 1].senderId === otherUser.id) {
         if (!user1 || !user2) {
           convoCopy.unreadMessages++;
@@ -148,7 +154,11 @@ export const addNewConvoToStore = (state, recipientId, message) => {
       const newConvo = { ...convo };
       newConvo.id = message.conversationId;
       newConvo.messages.push(message);
-      newConvo.latestMessageText = message.text;
+      if (checkIfImage(message.text)) {
+        newConvo.latestMessageText = "[Image]";
+      } else {
+        newConvo.latestMessageText = message.text;
+      }
       return newConvo;
     } else {
       return convo;

@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Typography, Avatar } from "@material-ui/core";
+import { checkIfImage } from "../../utils/utilFunctions";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -50,9 +51,7 @@ const OtherUserBubble = (props) => {
           {otherUser.username} {time}
         </Typography>
         <Box className={classes.bubble}>
-          {text.includes(
-            "https://messenger-starter-kwsmin.s3.amazonaws.com/"
-          ) ? (
+          {checkIfImage(text) ? (
             <Typography className={classes.text}>
               <img src={text} alt="" className={classes.image} />
             </Typography>
