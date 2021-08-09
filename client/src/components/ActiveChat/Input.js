@@ -3,6 +3,7 @@ import { FormControl, FilledInput } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { postMessage } from "../../store/utils/thunkCreators";
+import FileUpload from "./FileUpload";
 
 const styles = {
   root: {
@@ -55,6 +56,9 @@ const Input = (props) => {
           name="text"
           onChange={handleChange}
         />
+        <FormControl>
+          <FileUpload setText={setText} />
+        </FormControl>
       </FormControl>
     </form>
   );

@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Typography, Avatar } from "@material-ui/core";
+import { checkIfImage } from "../../utils/utilFunctions";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -29,6 +30,12 @@ const useStyles = makeStyles(() => ({
     letterSpacing: -0.2,
     padding: 8,
   },
+  image: {
+    width: 200,
+    minHeight: 200,
+    maxHeight: 300,
+    borderRadius: 7,
+  },
 }));
 
 const OtherUserBubble = (props) => {
@@ -46,7 +53,15 @@ const OtherUserBubble = (props) => {
           {otherUser.username} {time}
         </Typography>
         <Box className={classes.bubble}>
-          <Typography className={classes.text}>{text}</Typography>
+          {checkIfImage(text) ? (
+            <Avatar
+              alt={otherUser.username}
+              src={text}
+              className={classes.image}
+            ></Avatar>
+          ) : (
+            <Typography className={classes.text}>{text}</Typography>
+          )}
         </Box>
       </Box>
     </Box>

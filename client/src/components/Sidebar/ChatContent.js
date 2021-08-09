@@ -15,8 +15,10 @@ const useStyles = makeStyles((theme) => ({
   },
   previewText: {
     fontSize: 12,
-    color: "#9CADC8",
+    color: (props) => (props.conversation.unreadMessages ? "black" : "#9CADC8"),
     letterSpacing: -0.17,
+    fontWeight: (props) =>
+      props.conversation.unreadMessages ? "bold" : undefined,
   },
   unreadStyles: {
     fontWeight: 600,
@@ -32,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ChatContent = (props) => {
-  const classes = useStyles();
+  const classes = useStyles(props);
   const { conversation } = props;
   const { latestMessageText, otherUser, unreadMessages } = conversation;
 

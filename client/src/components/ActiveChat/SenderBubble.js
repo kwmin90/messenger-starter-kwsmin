@@ -1,6 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Typography } from "@material-ui/core";
+import { Avatar, Box, Typography } from "@material-ui/core";
+import { checkIfImage } from "../../utils/utilFunctions";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -25,6 +27,12 @@ const useStyles = makeStyles(() => ({
     background: "#F4F6FA",
     borderRadius: "10px 10px 0 10px",
   },
+  image: {
+    width: 200,
+    minHeight: 200,
+    maxHeight: 300,
+    borderRadius: 7,
+  },
 }));
 
 const SenderBubble = (props) => {
@@ -34,10 +42,24 @@ const SenderBubble = (props) => {
     <Box className={classes.root}>
       <Typography className={classes.date}>{time}</Typography>
       <Box className={classes.bubble}>
-        <Typography className={classes.text}>{text}</Typography>
+        {checkIfImage(text) ? (
+          <Avatar
+            alt={props.user.username}
+            src={text}
+            className={classes.image}
+          ></Avatar>
+        ) : (
+          <Typography className={classes.text}>{text}</Typography>
+        )}
       </Box>
     </Box>
   );
 };
 
-export default SenderBubble;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  };
+};
+
+export default connect(mapStateToProps, null)(SenderBubble);
