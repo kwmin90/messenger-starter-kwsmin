@@ -79,8 +79,8 @@ router.get("/", async (req, res, next) => {
 
       // set properties for notification count and latest message preview
       if (
-        convoJSON.messages[0].text.includes(
-          "https://messenger-starter-kwsmin.s3.amazonaws.com/"
+        /^https?:\/\/([^/]+)\.s3\.amazonaws\.com\/(.+)$/.test(
+          convoJSON.messages[0].text
         )
       ) {
         convoJSON.latestMessageText = "[Image]";

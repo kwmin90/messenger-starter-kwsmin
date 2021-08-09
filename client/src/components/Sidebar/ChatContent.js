@@ -15,13 +15,10 @@ const useStyles = makeStyles((theme) => ({
   },
   previewText: {
     fontSize: 12,
-    color: "#9CADC8",
+    color: (props) => (props.conversation.unreadMessages ? "black" : "#9CADC8"),
     letterSpacing: -0.17,
-  },
-  previewWithBoldedText: {
-    fontSize: 12,
-    letterSpacing: -0.17,
-    fontWeight: "bold",
+    fontWeight: (props) =>
+      props.conversation.unreadMessages ? "bold" : undefined,
   },
   unreadStyles: {
     fontWeight: 600,
@@ -37,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ChatContent = (props) => {
-  const classes = useStyles();
+  const classes = useStyles(props);
   const { conversation } = props;
   const { latestMessageText, otherUser, unreadMessages } = conversation;
 
@@ -47,15 +44,9 @@ const ChatContent = (props) => {
         <Typography className={classes.username}>
           {otherUser.username}
         </Typography>
-        {unreadMessages ? (
-          <Typography className={classes.previewWithBoldedText}>
-            {latestMessageText}
-          </Typography>
-        ) : (
-          <Typography className={classes.previewText}>
-            {latestMessageText}
-          </Typography>
-        )}
+        <Typography className={classes.previewText}>
+          {latestMessageText}
+        </Typography>
       </Box>
       {unreadMessages !== "" && (
         <Box className={classes.unreadStyles}>

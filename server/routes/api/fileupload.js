@@ -8,11 +8,13 @@ router.post("/", async (req, res, next) => {
     }
     const { type, name } = req.body;
     const { username } = req.user;
-    const s3Bucket = "messenger-starter-kwsmin";
+    const s3Bucket = process.env.AWS_BUCKET_NAME;
     const fileName = `${username}/${name}`;
     const s3 = new aws.S3({
       signatureVersion: "v4",
-      region: "ca-central-1",
+      region: process.env.AWS_REGION,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     });
     const s3Params = {
       Bucket: s3Bucket,
